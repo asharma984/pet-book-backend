@@ -72,7 +72,6 @@ res.json({
     token,
     user: {
         id:user._id,
-        email:user.email,
         username:user.username
     }
 })
@@ -114,6 +113,14 @@ router.post("/tokeIsValid",async(req,res)=>{
 {
    return res.status(500).json({error:err.message});
 }
+});
+
+router.get("/",auth,async(req,res)=>{
+   const user=User.findById(req.user);
+   res.json({
+     displayName:user.displayName,
+     id:user._id
+   });
 });
 
 
