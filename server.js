@@ -13,7 +13,7 @@ const PORT=process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`The server started on port: ${PORT}`));
 
-//set up mongoose
+//set up mongoose ( David is using .env.ATLAS_URI )
 const uri=process.env.MONGODB_CONNECTION_STRING;
 mongoose.connect(uri, {
     useNewUrlParser:true,
@@ -24,6 +24,15 @@ mongoose.connect(uri, {
         console.log("Mongodb connection established successfully")
        }
     )
+
+
+const petsRouter = require('./routes/pets');
+const blogPostsRouter = require('./routes/blogposts');
+const apiRouter = require('./routes/api');
+
+app.use('/api', apiRouter);
+app.use('/pets', petsRouter);
+app.use('/blogposts', blogPostsRouter);
 
  //set up routes   
  app.use("/users",require("./routes/userRouter"));
