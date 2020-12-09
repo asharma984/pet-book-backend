@@ -118,6 +118,6 @@ const handleSearch=(searchParams)=>{
             temp=(`${temp}${key}=${value}&`);
         }
     });
-    console.log(temp)
+
     return temp
 };

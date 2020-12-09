@@ -68,7 +68,6 @@ router.route('/:id').delete((req,res) =>{
 
 // update a pet from the database
 router.route('/update/:id').put((req, res) =>{
-    console.log(req.body.photos)
     Pet.findById(req.params.id)
         .then(pet => {
             pet.userId = req.body.userId;
