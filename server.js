@@ -13,12 +13,12 @@ const PORT=process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`The server started on port: ${PORT}`));
 
-//set up mongoose ( David is using .env.ATLAS_URI )
+
 const uri=process.env.MONGODB_CONNECTION_STRING;
 mongoose.connect(uri, {
     useNewUrlParser:true,
     useUnifiedTopology:true,
-   useCreateIndex:true}
+    useCreateIndex:true}
     ,(err)=>{
         if(err) throw err;
         console.log("Mongodb connection established successfully")
