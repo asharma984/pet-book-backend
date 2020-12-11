@@ -120,8 +120,11 @@ router.post("/tokeIsValid",async(req,res)=>{
 router.get("/",auth,async(req,res)=>{
    const user=User.findById(req.user);
    res.json({
+     user:{
      displayName:user.displayName,
-     id:user._id
+     id:user._id,
+     type:user.type
+     }
    });
 });
 
