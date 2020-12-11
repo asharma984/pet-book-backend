@@ -9,10 +9,10 @@ const auth=require("../middleware/auth");
 router.post("/register", async(req,res)=>{
     
 try{
-    let {email,password,passwordCheck,username}=req.body;
+    let {email,password,passwordCheck,userName,userType}=req.body;
 
 //validation
-if(!email || !password || !passwordCheck)
+if(!email || !password || !passwordCheck || !userType)
   return res.status(400).json({msg:"All fields are required"});
 
 if(password.length<5)
@@ -21,8 +21,8 @@ if(password.length<5)
 if(passwordCheck!==password)
   return res.status(400).json({msg:"Please enter the same password twice"});
 
-if(!username)
-  username=email;
+if(!userName)
+  userName=email;
 
 const existingUser= await User.findOne({email:email});
 if(existingUser)
@@ -35,7 +35,8 @@ const passwordHash=await bcrypt.hash(password,salt);
 const newUser=new User({
     email,
     password:passwordHash,
-    username
+    userName,
+    type:userType
 });
 
 const savedUser=await newUser.save();
@@ -72,7 +73,8 @@ res.json({
     token,
     user: {
         id:user._id,
-        username:user.username
+        username:user.username,
+        type:user.type
     }
 })
 
