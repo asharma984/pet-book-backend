@@ -12,11 +12,11 @@ const petSchema = new Schema({
                                  gender: {type: String, required: true},
                                  name: {type: String, required: true},
                                  description: {type: String},
+                                 adoptable: {type: Boolean, required: true},
                                  photos: {type: Array},
                                  blogpostId: {type: Array},
                                  email: {type: String},
                                  contact: {type: JSON},
-                                 adoptable: {type: Boolean, required: true},
                              }, {
                                  timestamps: true,
                              });

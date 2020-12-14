@@ -37,6 +37,7 @@ router.route('/add').post((req, res) => {
     const photos = req.body.photos;
     const blogpostId = req.body.blogpostId;
     const contact = req.body.contact;
+    const adoptable = req.body.adoptable
 
     const newPet = new Pet({
                                userId,
@@ -50,7 +51,8 @@ router.route('/add').post((req, res) => {
                                description,
                                photos,
                                blogpostId,
-                               contact
+                               contact,
+                               adoptable
                            });
 
     newPet.save()
