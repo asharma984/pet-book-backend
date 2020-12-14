@@ -98,7 +98,7 @@ router.delete("/delete",auth, async(req,res)=>{
 }
 });
 
-router.post("/tokeIsValid",async(req,res)=>{
+router.post("/tokenIsValid",async(req,res)=>{
   try{
     const token=req.header("x-auth-token");
     if(!token) return res.json(false);
@@ -127,6 +127,109 @@ router.get("/",auth,async(req,res)=>{
      }
    });
 });
+
+//update password
+router.put("/update", async(req,res)=>{
+    
+  try{
+      let {id,password,passwordCheck}=req.body;
+  
+  //validation
+  if(!password || !passwordCheck)
+    return res.status(400).json({msg:"All fields are required"});
+  
+  if(password.length<5)
+    return res.status(400).json({msg:"Password should be greater than or equal to 5 characters"});
+  
+  if(passwordCheck!==password)
+    return res.status(400).json({msg:"Please enter the same password twice"});
+  
+  
+  
+  const existingUser= await User.findById(id);
+  const salt=await bcrypt.genSalt();
+  const passwordHash=await bcrypt.hash(password,salt);
+  
+  const newUser=new User({
+      email:existingUser.email,
+      password:passwordHash,
+      userName:existingUser.userName,
+      type:existingUser.type,
+      pets:existingUser.pets,
+    followedPets:existingUser.followedPets
+  });
+
+  
+  
+  const savedUser=await userModel.update({_id: id}, {$set: newUser});
+  res.send(savedUser);
+  }
+  catch(err)
+  {
+      res.status(500).json({error:err.message});
+  }
+  
+  });
+
+  //add a new pet to the followed list
+  router.post("/:id/followedPets",async(req,res)=>{
+    try{
+    const user=await User.findOne({_id:req.params.id});
+    if(!user)
+    return res.status(400).json({msg:"The user does not exist"});
+  
+    const id=req.params.id;
+    User.findOneAndUpdate(
+      { _id: id }, 
+      { $addToSet: { followedPets: req.body  } })
+      .then(result=>res.send(result.followedPets));
+ 
+    }
+    catch(err)
+    {
+       return res.status(500).json({error:err.message});
+    }
+    })
+  
+    //get list of followed pets for an user
+    router.get("/:id/followedPets",async(req,res)=>{
+      try{
+      const user=await User.findOne({_id:req.params.id});
+      if(!user)
+      return res.status(400).json({msg:"The user does not exist"});
+      
+      res.send({
+        followedPets:user.followedPets 
+      })
+      
+      }
+      catch(err)
+      {
+         return res.status(500).json({error:err.message});
+      }
+      })
+  
+    //delete a pet for a user from the follower list
+      router.delete("/:id/followedPets/:pid",async(req,res)=>{
+        try{
+        const user=await User.findOne({_id:req.params.id});
+        if(!user)
+        return res.status(400).json({msg:"The user does not exist"});
+        
+        User.findByIdAndUpdate(
+          req.params.id, { $pull: { "followedPets": { _id: req.params.pid } } }, { safe: true, upsert: true },
+          function(err, user) {
+              if (err) { return handleError(res, err); }
+              return res.status(200).json(user.followedPets);
+          });
+    
+        
+        }
+        catch(err)
+        {
+           return res.status(500).json({error:err.message});
+        }
+        })
 
 
 module.exports=router;
