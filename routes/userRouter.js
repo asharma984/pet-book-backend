@@ -88,10 +88,9 @@ catch(err)
 })
 
 //delete route
-router.delete("/delete",auth, async(req,res)=>{
+router.delete("/delete", async(req,res)=>{
     try{
-        console.log(req.user);
- const deletedUser= await User.findByIdAndDelete(req.user);
+ const deletedUser= await User.findByIdAndDelete(req.body.source.id);
  res.json(deletedUser);
     }
     catch(err)
