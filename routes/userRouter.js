@@ -217,7 +217,7 @@ router.put("/update", async(req,res)=>{
         return res.status(400).json({msg:"The user does not exist"});
         
         User.findByIdAndUpdate(
-          req.params.id, { $pull: { "followedPets": { _id: req.params.pid } } }, { safe: true, upsert: true },
+          req.params.id, { $pull: { "followedPets": { animalId: req.params.pid } } }, { safe: true, upsert: true },
           function(err, user) {
               if (err) { return handleError(res, err); }
               return res.status(200).json(user.followedPets);
