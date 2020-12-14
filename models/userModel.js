@@ -5,8 +5,8 @@ const userSchema=new mongoose.Schema({
     password:{type:String,required:true,minlength:5},
     type:{type:String,required:true},
     userName:{type:String},
-    pets:{type:Array,default:[]},
-    followedPets:{type:Array,default:[]}
+    pets:{type:Array,"default":[]},
+    followedPets:{type:Array,"default":[]}
 });
 
 module.exports= User= mongoose.model("user",userSchema);
