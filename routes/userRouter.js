@@ -73,8 +73,10 @@ res.json({
     token,
     user: {
         id:user._id,
-        username:user.username,
-        type:user.type
+        displayName:user.displayName,
+        id:user._id,
+        type:user.type,
+        email:user.email
     }
 })
 
@@ -123,7 +125,8 @@ router.get("/",auth,async(req,res)=>{
      user:{
      displayName:user.displayName,
      id:user._id,
-     type:user.type
+     type:user.type,
+         email:user.email
      }
    });
 });

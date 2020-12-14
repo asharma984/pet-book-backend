@@ -14,7 +14,9 @@ const petSchema = new Schema({
                                  description: {type: String},
                                  photos: {type: Array},
                                  blogpostId: {type: Array},
-                                 contact: {type: JSON}
+                                 email: {type: String},
+                                 contact: {type: JSON},
+                                 adoptable: {type: Boolean, required: true},
                              }, {
                                  timestamps: true,
                              });
