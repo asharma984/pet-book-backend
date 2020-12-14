@@ -15,6 +15,14 @@ router.route('/user/:userId').get((req, res) =>{
         .catch(err => res.status(400).json('Error: ' +err))
 });
 
+
+// get all pets of a specific type
+router.route('/type/:petType').get((req, res) =>{
+    Pet.find({"type":req.params.petType})
+        .then(pet => res.json(pet))
+        .catch(err => res.status(400).json('Error: ' +err))
+});
+
 // Add a new pet to the database
 router.route('/add').post((req, res) => {
     const userId = req.body.userId;
@@ -58,7 +66,6 @@ router.route('/:id').get((req, res) =>{
 });
 
 // delete a pet from the database
-//TODO remove all blogposts for pet currently handled on front end
 router.route('/:id').delete((req,res) =>{
 
     Pet.findByIdAndDelete(req.params.id)
