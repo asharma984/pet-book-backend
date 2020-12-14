@@ -98,7 +98,7 @@ router.delete("/delete",auth, async(req,res)=>{
 }
 });
 
-router.post("/tokeIsValid",async(req,res)=>{
+router.post("/tokenIsValid",async(req,res)=>{
   try{
     const token=req.header("x-auth-token");
     if(!token) return res.json(false);
@@ -127,6 +127,5 @@ router.get("/",auth,async(req,res)=>{
      }
    });
 });
-
 
 module.exports=router;
